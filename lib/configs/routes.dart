@@ -1,5 +1,6 @@
 import 'dart:js';
 
+import 'package:empolyee_management/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../main.dart';
@@ -15,7 +16,7 @@ class Routes {
   static Route<dynamic> generateRoutesWithParams(RouteSettings settings) {
     return MaterialPageRoute(
         builder: ((context) =>
-            MyHomePage(title: settings.arguments as String)));
+            HomeScreen(title: settings.arguments as String)));
   }
 
   static Map<String, Widget Function(BuildContext)>

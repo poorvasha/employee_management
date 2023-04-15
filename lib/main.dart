@@ -1,4 +1,5 @@
 import 'package:empolyee_management/configs/resouces.dart';
+import 'package:empolyee_management/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -17,30 +18,10 @@ class MyApp extends StatelessWidget {
     ));
     return MaterialApp(
       title: 'Employee List',
-      theme: ThemeData(fontFamily: 'Roboto'),
-      home: const MyHomePage(title: 'Employee List'),
+      theme: AppResources.appThemeData,
+      home: const HomeScreen(title: 'Employee List'),
       debugShowCheckedModeBanner: false,
       showSemanticsDebugger: false,
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Placeholder(),
     );
   }
 }

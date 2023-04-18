@@ -35,9 +35,8 @@ class EmployeesListWidgets extends StatelessWidget {
             )),
       ),
       itemBuilder: (context, element) {
-        var index = employees.indexOf(element);
         return Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               border: Border(top: BorderSide(color: AppColors.extraLightgray))),
           child: Dismissible(
             key: UniqueKey(),

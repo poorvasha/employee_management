@@ -15,7 +15,7 @@ import '../models/input_field_model.dart';
 import '../widgets/button.dart';
 import '../widgets/input_field.dart';
 
-class AddEmployeeScreen extends StatelessWidget {
+class EmployeeFormScreen extends StatelessWidget {
   TextEditingController employeeNameController = TextEditingController();
   TextEditingController designationController = TextEditingController();
   TextEditingController fromPeriodController =
@@ -25,7 +25,7 @@ class AddEmployeeScreen extends StatelessWidget {
   DateTime? toDate;
   Employee? employeeData;
 
-  AddEmployeeScreen({super.key, this.employeeData});
+  EmployeeFormScreen({super.key, this.employeeData});
 
   setFromSelectedValue(DateTime? selectedDate) {
     fromDate = selectedDate;

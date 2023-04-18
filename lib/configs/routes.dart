@@ -2,7 +2,7 @@ import 'package:empolyee_management/local_db_models/employees_local_db_model.dar
 import 'package:empolyee_management/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
-import '../screens/add_employee_screen.dart';
+import '../screens/employee_form_screen.dart';
 
 class Routes {
   static Route<dynamic> generateRoutesWithParams(RouteSettings settings) {
@@ -13,7 +13,7 @@ class Routes {
                 HomeScreen(title: settings.arguments as String)));
       case '/EmployeeFormScreen':
         return MaterialPageRoute(
-            builder: ((context) => AddEmployeeScreen(
+            builder: ((context) => EmployeeFormScreen(
                 employeeData: settings.arguments != null
                     ? settings.arguments as Employee
                     : null)));

@@ -71,7 +71,8 @@ class _CalendarState extends State<Calendar> {
     try {
       setState(() {
         activeOption = "Next Monday";
-        selectedDate = DateTime.now().next(DateTime.monday);
+        selectedDate =
+            DateTime.now().add(const Duration(days: 1)).next(DateTime.monday);
       });
     } catch (e) {
       Exception(e);
@@ -82,7 +83,8 @@ class _CalendarState extends State<Calendar> {
     try {
       setState(() {
         activeOption = "Next Tuesday";
-        selectedDate = DateTime.now().next(DateTime.tuesday);
+        selectedDate =
+            DateTime.now().add(const Duration(days: 1)).next(DateTime.tuesday);
       });
     } catch (e) {
       Exception(e);

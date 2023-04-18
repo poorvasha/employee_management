@@ -35,27 +35,28 @@ class EmployeesListWidgets extends StatelessWidget {
             )),
       ),
       itemBuilder: (context, element) {
-        return Container(
-          decoration: const BoxDecoration(
-              border: Border(top: BorderSide(color: AppColors.extraLightgray))),
-          child: Dismissible(
-            key: UniqueKey(),
-            background: ColoredBox(
-              color: AppColors.red,
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: SvgPicture.asset(AppIcons.delete)),
+        return InkWell(
+          onTap: () => {
+            onEmployeeItemTapped(element),
+          },
+          child: Container(
+            decoration: const BoxDecoration(
+                border:
+                    Border(top: BorderSide(color: AppColors.extraLightgray))),
+            child: Dismissible(
+              key: UniqueKey(),
+              background: ColoredBox(
+                color: AppColors.red,
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: SvgPicture.asset(AppIcons.delete)),
+                ),
               ),
-            ),
-            direction: DismissDirection.endToStart,
-            onDismissed: (direction) {
-              onItemDelete(element);
-            },
-            child: InkWell(
-              onTap: () => {
-                onEmployeeItemTapped(element),
+              direction: DismissDirection.endToStart,
+              onDismissed: (direction) {
+                onItemDelete(element);
               },
               child: Padding(
                 padding:

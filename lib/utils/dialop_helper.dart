@@ -19,8 +19,16 @@ class DialogHelper {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
-      title: const Text("Confirmation"),
-      content: const Text("Would you like to delete this employee?"),
+      title: Text(
+        "Confirmation",
+        style: AppTextStyles.mediumRoboto18
+            .copyWith(color: AppColors.secondaryColor),
+      ),
+      content: Text(
+        "Would you like to delete this employee?",
+        style: AppTextStyles.regularRoboto15
+            .copyWith(color: AppColors.secondaryColor, height: 1.5),
+      ),
       actions: [
         cancelButton,
         continueButton,

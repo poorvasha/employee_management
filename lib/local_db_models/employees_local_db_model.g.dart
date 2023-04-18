@@ -35,7 +35,10 @@ class TableEmployee extends SqfEntityTableBase {
     fields = [
       SqfEntityFieldBase('name', DbType.text),
       SqfEntityFieldBase('designation', DbType.text),
-      SqfEntityFieldBase('period', DbType.text),
+      SqfEntityFieldBase('fromPeriod', DbType.datetimeUtc,
+          minValue: DateTime.parse('1900-01-01')),
+      SqfEntityFieldBase('toPeriod', DbType.datetimeUtc,
+          minValue: DateTime.parse('1900-01-01')),
     ];
     super.init();
   }
@@ -98,16 +101,21 @@ class EmployeesModel extends SqfEntityModelProvider {
 // region Employee
 class Employee extends TableBase {
   Employee(
-      {this.id, this.name, this.designation, this.period, this.isDeleted}) {
+      {this.id,
+      this.name,
+      this.designation,
+      this.fromPeriod,
+      this.toPeriod,
+      this.isDeleted}) {
     _setDefaultValues();
     softDeleteActivated = true;
   }
-  Employee.withFields(
-      this.name, this.designation, this.period, this.isDeleted) {
+  Employee.withFields(this.name, this.designation, this.fromPeriod,
+      this.toPeriod, this.isDeleted) {
     _setDefaultValues();
   }
-  Employee.withId(
-      this.id, this.name, this.designation, this.period, this.isDeleted) {
+  Employee.withId(this.id, this.name, this.designation, this.fromPeriod,
+      this.toPeriod, this.isDeleted) {
     _setDefaultValues();
   }
   // fromMap v2.0
@@ -122,8 +130,19 @@ class Employee extends TableBase {
     if (o['designation'] != null) {
       designation = o['designation'].toString();
     }
-    if (o['period'] != null) {
-      period = o['period'].toString();
+    if (o['fromPeriod'] != null) {
+      fromPeriod = int.tryParse(o['fromPeriod'].toString()) != null
+          ? DateTime.fromMillisecondsSinceEpoch(
+              int.tryParse(o['fromPeriod'].toString())!,
+              isUtc: true)
+          : DateTime.tryParse(o['fromPeriod'].toString());
+    }
+    if (o['toPeriod'] != null) {
+      toPeriod = int.tryParse(o['toPeriod'].toString()) != null
+          ? DateTime.fromMillisecondsSinceEpoch(
+              int.tryParse(o['toPeriod'].toString())!,
+              isUtc: true)
+          : DateTime.tryParse(o['toPeriod'].toString());
     }
     isDeleted = o['isDeleted'] != null
         ? o['isDeleted'] == 1 || o['isDeleted'] == true
@@ -133,7 +152,8 @@ class Employee extends TableBase {
   int? id;
   String? name;
   String? designation;
-  String? period;
+  DateTime? fromPeriod;
+  DateTime? toPeriod;
   bool? isDeleted;
 
   // end FIELDS (Employee)
@@ -157,8 +177,23 @@ class Employee extends TableBase {
     if (designation != null || !forView) {
       map['designation'] = designation;
     }
-    if (period != null || !forView) {
-      map['period'] = period;
+    if (fromPeriod != null) {
+      map['fromPeriod'] = forJson
+          ? fromPeriod!.toUtc().toString()
+          : forQuery
+              ? fromPeriod!.millisecondsSinceEpoch
+              : fromPeriod;
+    } else if (fromPeriod != null || !forView) {
+      map['fromPeriod'] = null;
+    }
+    if (toPeriod != null) {
+      map['toPeriod'] = forJson
+          ? toPeriod!.toUtc().toString()
+          : forQuery
+              ? toPeriod!.millisecondsSinceEpoch
+              : toPeriod;
+    } else if (toPeriod != null || !forView) {
+      map['toPeriod'] = null;
     }
     if (isDeleted != null) {
       map['isDeleted'] = forQuery ? (isDeleted! ? 1 : 0) : isDeleted;
@@ -180,8 +215,23 @@ class Employee extends TableBase {
     if (designation != null || !forView) {
       map['designation'] = designation;
     }
-    if (period != null || !forView) {
-      map['period'] = period;
+    if (fromPeriod != null) {
+      map['fromPeriod'] = forJson
+          ? fromPeriod!.toUtc().toString()
+          : forQuery
+              ? fromPeriod!.millisecondsSinceEpoch
+              : fromPeriod;
+    } else if (fromPeriod != null || !forView) {
+      map['fromPeriod'] = null;
+    }
+    if (toPeriod != null) {
+      map['toPeriod'] = forJson
+          ? toPeriod!.toUtc().toString()
+          : forQuery
+              ? toPeriod!.millisecondsSinceEpoch
+              : toPeriod;
+    } else if (toPeriod != null || !forView) {
+      map['toPeriod'] = null;
     }
     if (isDeleted != null) {
       map['isDeleted'] = forQuery ? (isDeleted! ? 1 : 0) : isDeleted;
@@ -204,29 +254,26 @@ class Employee extends TableBase {
 
   @override
   List<dynamic> toArgs() {
-    return [name, designation, period, isDeleted];
+    return [
+      name,
+      designation,
+      fromPeriod != null ? fromPeriod!.millisecondsSinceEpoch : null,
+      toPeriod != null ? toPeriod!.millisecondsSinceEpoch : null,
+      isDeleted
+    ];
   }
 
   @override
   List<dynamic> toArgsWithIds() {
-    return [id, name, designation, period, isDeleted];
+    return [
+      id,
+      name,
+      designation,
+      fromPeriod != null ? fromPeriod!.millisecondsSinceEpoch : null,
+      toPeriod != null ? toPeriod!.millisecondsSinceEpoch : null,
+      isDeleted
+    ];
   }
-
-  // static Future<List<Employee>?> fromWebUrl(Uri uri,
-  //     {Map<String, String>? headers}) async {
-  //   try {
-  //     final response = await http.get(uri, headers: headers);
-  //     return await fromJson(response.body);
-  //   } catch (e) {
-  //     debugPrint(
-  //         'SQFENTITY ERROR Employee.fromWebUrl: ErrorMessage: ${e.toString()}');
-  //     return null;
-  //   }
-  // }
-
-  // Future<http.Response> postUrl(Uri uri, {Map<String, String>? headers}) {
-  //   return http.post(uri, headers: headers, body: toJson());
-  // }
 
   static Future<List<Employee>> fromJson(String jsonBody) async {
     final Iterable list = await json.decode(jsonBody) as Iterable;
@@ -357,8 +404,15 @@ class Employee extends TableBase {
   Future<int?> upsert({bool ignoreBatch = true}) async {
     try {
       final result = await _mnEmployee.rawInsert(
-          'INSERT OR REPLACE INTO employees (id, name, designation, period,isDeleted)  VALUES (?,?,?,?,?)',
-          [id, name, designation, period, isDeleted],
+          'INSERT OR REPLACE INTO employees (id, name, designation, fromPeriod, toPeriod,isDeleted)  VALUES (?,?,?,?,?,?)',
+          [
+            id,
+            name,
+            designation,
+            fromPeriod != null ? fromPeriod!.millisecondsSinceEpoch : null,
+            toPeriod != null ? toPeriod!.millisecondsSinceEpoch : null,
+            isDeleted
+          ],
           ignoreBatch);
       if (result! > 0) {
         saveResult = BoolResult(
@@ -384,7 +438,7 @@ class Employee extends TableBase {
   Future<BoolCommitResult> upsertAll(List<Employee> employees,
       {bool? exclusive, bool? noResult, bool? continueOnError}) async {
     final results = await _mnEmployee.rawInsertAll(
-        'INSERT OR REPLACE INTO employees (id, name, designation, period,isDeleted)  VALUES (?,?,?,?,?)',
+        'INSERT OR REPLACE INTO employees (id, name, designation, fromPeriod, toPeriod,isDeleted)  VALUES (?,?,?,?,?,?)',
         employees,
         exclusive: exclusive,
         noResult: noResult,
@@ -659,9 +713,15 @@ class EmployeeFilterBuilder extends ConjunctionBase {
     return _designation = _setField(_designation, 'designation', DbType.text);
   }
 
-  EmployeeField? _period;
-  EmployeeField get period {
-    return _period = _setField(_period, 'period', DbType.text);
+  EmployeeField? _fromPeriod;
+  EmployeeField get fromPeriod {
+    return _fromPeriod =
+        _setField(_fromPeriod, 'fromPeriod', DbType.datetimeUtc);
+  }
+
+  EmployeeField? _toPeriod;
+  EmployeeField get toPeriod {
+    return _toPeriod = _setField(_toPeriod, 'toPeriod', DbType.datetimeUtc);
   }
 
   EmployeeField? _isDeleted;
@@ -912,10 +972,16 @@ class EmployeeFields {
         SqlSyntax.setField(_fDesignation, 'designation', DbType.text);
   }
 
-  static TableField? _fPeriod;
-  static TableField get period {
-    return _fPeriod =
-        _fPeriod ?? SqlSyntax.setField(_fPeriod, 'period', DbType.text);
+  static TableField? _fFromPeriod;
+  static TableField get fromPeriod {
+    return _fFromPeriod = _fFromPeriod ??
+        SqlSyntax.setField(_fFromPeriod, 'fromPeriod', DbType.datetimeUtc);
+  }
+
+  static TableField? _fToPeriod;
+  static TableField get toPeriod {
+    return _fToPeriod = _fToPeriod ??
+        SqlSyntax.setField(_fToPeriod, 'toPeriod', DbType.datetimeUtc);
   }
 
   static TableField? _fIsDeleted;

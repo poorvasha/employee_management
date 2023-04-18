@@ -1,10 +1,8 @@
 import 'dart:convert';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:sqfentity/sqfentity.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
-import 'package:http/http.dart';
+
 part 'employees_local_db_model.g.dart';
 
 const SqfEntityTable employeesTable = SqfEntityTable(
@@ -15,7 +13,8 @@ const SqfEntityTable employeesTable = SqfEntityTable(
     fields: [
       SqfEntityField('name', DbType.text),
       SqfEntityField('designation', DbType.text),
-      SqfEntityField('period', DbType.text)
+      SqfEntityField('fromPeriod', DbType.datetimeUtc),
+      SqfEntityField('toPeriod', DbType.datetimeUtc)
     ]);
 
 const seqIdentity = SqfEntitySequence(
@@ -24,13 +23,9 @@ const seqIdentity = SqfEntitySequence(
 
 @SqfEntityBuilder(employeesModel)
 const employeesModel = SqfEntityModel(
-  modelName: 'employeesModel', // optional
+  modelName: 'employeesModel',
   databaseName: 'employeeManagement-db.db',
   password: null,
-
-  // put defined sequences into the sequences list.
   sequences: [seqIdentity],
-
-  // put defined tables into the tables list.
   databaseTables: [employeesTable],
 );

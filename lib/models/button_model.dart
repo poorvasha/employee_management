@@ -8,20 +8,22 @@ enum ButtonType {
 }
 
 class ButtonDataModel {
-  Size size = Size(AppResources.width, 40);
+  Size? size;
   Color buttonColor = AppColors.primaryColor;
   String? text;
   String? icon;
-  Function function;
+  Function buttonTappedFunction;
   ButtonType buttonType;
   Color? textColor;
+  bool? isActive;
 
   ButtonDataModel(
-      {required this.size,
+      {this.size,
       required this.buttonColor,
       required this.text,
       required this.icon,
-      required this.function,
+      required this.buttonTappedFunction,
       required this.buttonType,
-      required this.textColor});
+      required this.textColor,
+      this.isActive = false});
 }

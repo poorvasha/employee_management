@@ -1,26 +1,27 @@
-import 'dart:js';
-
+import 'package:empolyee_management/local_db_models/employees_local_db_model.dart';
 import 'package:empolyee_management/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
-import '../main.dart';
+import '../screens/add_employee_screen.dart';
 
 class Routes {
-  static const String flashScreen = 'flashScreen';
-  static const String loginScreen = 'loginScreen';
-  static const String getStartedScreen = 'getStartedScreen';
-  static const String homeScreen = 'homeScreen';
-  static const String userTypeScreen = 'userTypeScreen';
-  static const String userDetailScreen = 'userDetailScreen';
-
   static Route<dynamic> generateRoutesWithParams(RouteSettings settings) {
-    return MaterialPageRoute(
-        builder: ((context) =>
-            HomeScreen(title: settings.arguments as String)));
-  }
+    switch (settings.name) {
+      case '/HomeScreen':
+        return MaterialPageRoute(
+            builder: ((context) =>
+                HomeScreen(title: settings.arguments as String)));
+      case '/EmployeeFormScreen':
+        return MaterialPageRoute(
+            builder: ((context) => AddEmployeeScreen(
+                employeeData: settings.arguments != null
+                    ? settings.arguments as Employee
+                    : null)));
 
-  static Map<String, Widget Function(BuildContext)>
-      generateRoutesWithoutParams() {
-    return {};
+      default:
+        return MaterialPageRoute(
+            builder: ((context) =>
+                HomeScreen(title: settings.arguments as String)));
+    }
   }
 }

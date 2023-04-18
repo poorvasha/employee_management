@@ -2,36 +2,30 @@ import 'package:empolyee_management/local_db_models/employees_local_db_model.dar
 import 'package:sqfentity_gen/sqfentity_gen.dart';
 
 class EmployeeManagementService {
-  Employee employee = Employee();
-  void getEmployees() {
+  static Employee employee = Employee();
+  static Future<List<Employee>> getEmployees() async {
     try {
-      Future<List<Employee>> result = employee.select().toList();
+      List<Employee> result = await employee.select().toList();
+      return result;
     } catch (e) {
-      Exception(e);
+      Log(msg: "Get employees got failed", error: e);
+      return List.empty();
     }
   }
 
-  void addEmployee(Employee employeeData) {
+  static Future<void> addEmployee(Employee employeeData) async {
     try {
-      Future<int?> result = employeeData.save();
+      await employeeData.save();
     } catch (e) {
-      Exception(e);
+      Log(msg: "Adding employees got failed", error: e);
     }
   }
 
-  void deleteEmployee(Employee employeeData) {
+  static Future<void> deleteEmployee(Employee employeeData) async {
     try {
-      Future<BoolResult> result = employeeData.delete();
+      await employeeData.delete();
     } catch (e) {
-      Exception(e);
-    }
-  }
-
-  void updateEmployee(Employee employeeData) {
-    try {
-      Future<int?> result = employeeData.upsert();
-    } catch (e) {
-      Exception(e);
+      Log(msg: "Deleting employees got failed", error: e);
     }
   }
 }

@@ -115,17 +115,8 @@ class _CalendarState extends State<Calendar> {
     try {
       String relativeDate = "";
 
-      if (selectedDate!.isSameDate(DateTime.now().next(DateTime.monday))) {
-        relativeDate = "Next Monday";
-      }
-      if (selectedDate.isSameDate(DateTime.now().next(DateTime.tuesday))) {
-        relativeDate = "Next Tuesday";
-      }
-      if (selectedDate.isSameDate(DateTime.now())) {
+      if (selectedDate!.isSameDate(DateTime.now())) {
         relativeDate = "Today";
-      }
-      if (selectedDate.isSameDate(DateTime.now().add(Duration(days: 7)))) {
-        relativeDate = "After 1 week";
       }
 
       return relativeDate;

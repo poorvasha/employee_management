@@ -34,18 +34,6 @@ class EmployeeFormScreen extends StatelessWidget {
 
       return;
     }
-    if (selectedDate.isSameDate(DateTime.now().next(DateTime.monday))) {
-      fromPeriodController.text = "Next Monday";
-      return;
-    }
-    if (selectedDate.isSameDate(DateTime.now().next(DateTime.tuesday))) {
-      fromPeriodController.text = "Next Tuesday";
-      return;
-    }
-    if (selectedDate.isSameDate(DateTime.now().add(Duration(days: 7)))) {
-      fromPeriodController.text = "After 1 week";
-      return;
-    }
     fromPeriodController.text =
         DateFormat.d().add_MMM().add_y().format(selectedDate).toString();
   }

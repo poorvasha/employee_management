@@ -1,11 +1,40 @@
+import 'package:empolyee_management/local_db_models/employees_local_db_model.dart';
 import 'package:flutter/material.dart';
 
 import '../configs/resouces.dart';
 
 class DialogHelper {
-  // Show Dialog
-  // Show toast
-  // Show snack bar
+  static showDeleteDialog(BuildContext context, Function()? onNoTapped,
+      Function()? onDeleteTapped) {
+    Widget cancelButton = TextButton(
+      onPressed: onNoTapped,
+      child: const Text("No"),
+    );
+    Widget continueButton = TextButton(
+      onPressed: onDeleteTapped,
+      child: const Text("Delete"),
+    );
+
+    AlertDialog alert = AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      title: const Text("Confirmation"),
+      content: const Text("Would you like to delete this employee?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   static void showSnackbar(String message, BuildContext context) {
     SnackBar snackBar = SnackBar(
       backgroundColor: AppColors.secondaryColor,
@@ -15,34 +44,5 @@ class DialogHelper {
       ),
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
-
-  // Show loading
-  Future<void> showLoading(BuildContext context, {String? message}) {
-    return showDialog<void>(
-        context: context,
-        builder: (BuildContext context) => SimpleDialog(children: [
-              Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircularProgressIndicator(
-                      color: Theme.of(context).primaryColor,
-                      strokeWidth: 8,
-                    ),
-                    Text(
-                      message ?? 'loading...',
-                      style: AppTextStyles.mediumRoboto14
-                          .copyWith(color: AppColors.white),
-                    )
-                  ],
-                ),
-              ),
-            ]));
-  }
-
-  // Hide loading
-  void hideLoading(BuildContext context) {
-    return Navigator.of(context).pop();
   }
 }

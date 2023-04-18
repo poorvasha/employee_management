@@ -1,26 +1,43 @@
 import 'package:empolyee_management/local_db_models/employees_local_db_model.dart';
+import 'package:empolyee_management/models/async_wrapper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../services/employee_management_service.dart';
 
 abstract class EmployeeDataManipulation {}
 
-class CounterIncrementPressed extends EmployeeDataManipulation {}
+class GetEmployees extends EmployeeDataManipulation {
+  List<Employee> employees = [];
+  refreshEmployees() async {
+    employees = await EmployeeManagementService.getEmployees();
+  }
+}
 
-class CounterDecrementPressed extends EmployeeDataManipulation {}
+class AddEmployee extends EmployeeDataManipulation {
+  final Employee employee;
+  AddEmployee(this.employee);
+}
+
+class DeleteEmployee extends EmployeeDataManipulation {
+  final Employee employee;
+  DeleteEmployee(this.employee);
+}
 
 class EmployeeDataManipulationBloc
-    extends Bloc<EmployeeDataManipulation, Employee> {
-  EmployeeDataManipulationBloc() : super(Employee()) {
-    on<CounterIncrementPressed>((event, emit) => {emit(state)});
-    on<CounterDecrementPressed>((event, emit) => {emit(state)});
-  }
+    extends Bloc<EmployeeDataManipulation, AsyncWrapper<List<Employee>>> {
+  EmployeeDataManipulationBloc()
+      : super(AsyncWrapper<List<Employee>>(true, [])) {
+    on<AddEmployee>((event, emit) async {
+      await EmployeeManagementService.addEmployee(event.employee);
+    });
 
-  @override
-  void onChange(Change<Employee> change) {
-    super.onChange(change);
-  }
+    on<GetEmployees>((event, emit) async {
+      emit(AsyncWrapper<List<Employee>>(true, event.employees));
+      await event.refreshEmployees();
+      emit(AsyncWrapper<List<Employee>>(false, event.employees));
+    });
 
-  @override
-  void onTransition(Transition<EmployeeDataManipulation, Employee> transition) {
-    super.onTransition(transition);
+    on<DeleteEmployee>((event, emit) async =>
+        {await EmployeeManagementService.deleteEmployee(event.employee)});
   }
 }

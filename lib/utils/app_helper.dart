@@ -1,11 +1,4 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-
 class AppHelper {
-  static bool validateField(String value) {
-    return true;
-  }
-
   static String toCamelCase(String value) {
     if (value.isEmpty) {
       return value;
@@ -17,5 +10,21 @@ class AppHelper {
           " ${words[i][0].toUpperCase()}${words[i].substring(1).toLowerCase()}";
     }
     return result.trimLeft();
+  }
+}
+
+extension DateTimeExtension on DateTime {
+  DateTime next(int day) {
+    return add(
+      Duration(
+        days: (day - weekday) % DateTime.daysPerWeek,
+      ),
+    );
+  }
+}
+
+extension DateOnlyCompare on DateTime {
+  bool isSameDate(DateTime other) {
+    return year == other.year && month == other.month && day == other.day;
   }
 }

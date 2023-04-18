@@ -33,6 +33,7 @@ class _CalendarState extends State<Calendar> {
 
   DateTime? selectedDate = DateTime.now();
   String activeOption = "";
+  DateTime? firstDay;
 
   onOptionSelected() {
     try {
@@ -162,6 +163,8 @@ class _CalendarState extends State<Calendar> {
       selectedDate = widget.defaultDate ??
           (widget.calendarType == CalendarType.from ? DateTime.now() : null);
       focusedDate = widget.defaultDate ?? widget.firstDay ?? DateTime.now();
+      firstDay = widget.firstDay ?? DateTime.utc(2000, 1, 1);
+      focusedDate = widget.defaultDate ?? widget.firstDay ?? DateTime.now();
     });
   }
 
@@ -285,6 +288,11 @@ class _CalendarState extends State<Calendar> {
                   AppIcons.calendarLeftArrow,
                   height: 24,
                   width: 24,
+                  color: widget.calendarType == CalendarType.to
+                      ? firstDay!.month == focusedDate.month
+                          ? AppColors.lightgray
+                          : AppColors.gray
+                      : AppColors.gray,
                 )),
             Text(
               "${AppResources.months[focusedDate.month - 1]} ${focusedDate.year}",
@@ -310,8 +318,8 @@ class _CalendarState extends State<Calendar> {
         TableCalendar(
           rowHeight: 42,
           onCalendarCreated: (controller) => _pageController = controller,
-          firstDay: widget.firstDay ?? DateTime.utc(2000, 1, 1),
-          lastDay: DateTime.utc(2030, 3, 14),
+          firstDay: firstDay ?? DateTime.utc(2000, 1, 1),
+          lastDay: DateTime.utc(2050, 1, 1),
           headerVisible: false,
           focusedDay: focusedDate,
           onPageChanged: (focusedDay) => {

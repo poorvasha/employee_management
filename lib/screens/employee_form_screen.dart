@@ -29,11 +29,15 @@ class EmployeeFormScreen extends StatelessWidget {
 
   setFromSelectedValue(DateTime? selectedDate) {
     fromDate = selectedDate;
+    if (toDate != null && selectedDate!.isAfter(toDate!)) {
+      toPeriodController.text = "No Date";
+      toDate = null;
+    }
     if (selectedDate!.isSameDate(DateTime.now())) {
       fromPeriodController.text = "Today";
-
       return;
     }
+
     fromPeriodController.text =
         DateFormat.d().add_MMM().add_y().format(selectedDate).toString();
   }
